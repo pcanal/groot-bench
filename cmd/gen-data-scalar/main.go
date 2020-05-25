@@ -2,23 +2,22 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// +build ignore
-
 package main
 
 import (
 	"compress/flate"
 	"flag"
+	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"runtime/pprof"
-	"strconv"
 	"strings"
 
+	bench "github.com/go-hep/groot-bench"
 	"go-hep.org/x/hep/groot"
 	"go-hep.org/x/hep/groot/riofs"
 	"go-hep.org/x/hep/groot/rtree"
-	"golang.org/x/exp/rand"
 )
 
 func main() {
@@ -26,9 +25,10 @@ func main() {
 		nevts = flag.Int64("nevts", 1e7, "number of events to generate")
 		zip   = flag.String("zip", "", "compression to use (if any)")
 		lvl   = flag.Int("lvl", flate.DefaultCompression, "compression level to use (if any)")
-		fname = flag.String("f", "scalar.root", "path to output ROOT file to generate")
+		fname = flag.String("o", "scalar.root", "path to output ROOT file to generate")
 		tname = flag.String("t", "tree", "name of the output ROOT tree to generate")
-		seed  = flag.Uint64("seed", 1234, "seed for random number generation")
+		cols  = flag.Int("ncols", 4, "number of columns to generate")
+		seed  = flag.Int64("seed", 1234, "seed for random number generation")
 
 		cpuProf = flag.String("cpu-profile", "", "path to the output CPU profile")
 	)
@@ -37,6 +37,8 @@ func main() {
 	log.SetFlags(0)
 
 	flag.Parse()
+
+	bench.Version()
 
 	var opts []riofs.FileOption
 	switch strings.ToLower(*zip) {
@@ -51,14 +53,22 @@ func main() {
 	case "none":
 		opts = append(opts, riofs.WithoutCompression())
 	case "", "default":
-		// use default
 		*zip = "default"
 	default:
 		log.Fatalf("invalid compression flag %q", *zip)
 	}
 
-	if *cpuProf != "" {
-		prof, err := os.Create(*cpuProf)
+	log.Printf(
+		"creating ROOT file with compr=%q, level=%d: %s",
+		*zip, *lvl, *fname,
+	)
+
+	gen(*fname, *tname, opts, *nevts, *seed, *cols, *cpuProf)
+}
+
+func gen(fname, tname string, opts []riofs.FileOption, nevts, seed int64, ncols int, cpu string) {
+	if cpu != "" {
+		prof, err := os.Create(cpu)
 		if err != nil {
 			log.Fatalf("could not create CPU profile: %+v", err)
 		}
@@ -70,25 +80,22 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
-	log.Printf(
-		"creating ROOT file with compr=%q, level=%d: %s",
-		*zip, *lvl, *fname,
-	)
-	f, err := groot.Create(*fname, opts...)
+	f, err := groot.Create(fname, opts...)
 	if err != nil {
 		log.Fatalf("could not create output ROOT file: %+v", err)
 	}
 	defer f.Close()
 
-	var evt struct {
-		I32 int32
-		I64 int64
-		F32 float32
-		F64 float64
-		Str string
+	var (
+		data  = make([]float64, ncols)
+		wvars = make([]rtree.WriteVar, ncols)
+	)
+	for i := range data {
+		wvars[i].Name = fmt.Sprintf("var%02d", i)
+		wvars[i].Value = &data[i]
 	}
 
-	w, err := rtree.NewWriter(f, *tname, rtree.WriteVarsFromStruct(&evt))
+	w, err := rtree.NewWriter(f, tname, wvars)
 	if err != nil {
 		log.Fatalf("could not create output ROOT tree: %+v", err)
 	}
@@ -99,16 +106,16 @@ func main() {
 		log.Printf("branch[%d]: name=%q, title=%q", i, b.Name(), b.Title())
 	}
 
-	rnd := rand.New(rand.NewSource(*seed))
-	for i := int64(0); i < *nevts; i++ {
-		if i%(*nevts/10) == 0 {
+	rnd := rand.New(rand.NewSource(seed))
+	freq := nevts / 10
+
+	for i := int64(0); i < nevts; i++ {
+		if i%freq == 0 {
 			log.Printf("event %d...", i)
 		}
-		evt.I32 = rnd.Int31()
-		evt.I64 = rnd.Int63()
-		evt.F32 = rnd.Float32() * float32(rnd.Int())
-		evt.F64 = rnd.Float64() * float64(rnd.Int())
-		evt.Str = "evt-" + strconv.Itoa(int(i))
+		for i := range data {
+			data[i] = rnd.Float64()
+		}
 		_, err = w.Write()
 		if err != nil {
 			log.Fatalf("could not write event %d: %+v", i, err)
