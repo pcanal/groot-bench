@@ -68,3 +68,21 @@ ReadScalar/LZ4   1.39 ± 1%
 ReadScalar/None  1.28 ± 2%
 ReadScalar/Zlib  4.11 ± 1%
 ```
+
+- ROOT TTree::SetBranch `6.20/04`
+
+```
+name             s
+ReadScalar/LZ4   1.36 ± 3%
+ReadScalar/None  1.21 ± 2%
+ReadScalar/Zlib  2.48 ± 1%
+```
+
+- ROOT TTreeReader `6.20/04`
+
+```
+name             s
+ReadScalar/LZ4   1.57 ± 2%
+ReadScalar/None  1.43 ± 4%
+ReadScalar/Zlib  2.69 ± 1%
+```
