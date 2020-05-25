@@ -69,6 +69,15 @@ ReadScalar/None  1.28 ± 2%
 ReadScalar/Zlib  4.11 ± 1%
 ```
 
+- Go-HEP `v0.27.0`
+
+```
+name             s
+ReadScalar/LZ4   0.77 ± 4%
+ReadScalar/None  0.75 ± 4%
+ReadScalar/Zlib  1.34 ± 1%
+```
+
 - ROOT TTree::SetBranch `6.20/04`
 
 ```
