@@ -64,8 +64,7 @@ Usage of gen-data-scalar:
 
 ```
 name             s
-ReadScalar/LZ4   2.00 ± 2%
-ReadScalar/None  1.78 ± 2%
-ReadScalar/Zlib  5.85 ± 1%
-ReadScalar/Zstd  5.88 ± 1%
+ReadScalar/LZ4   1.39 ± 1%
+ReadScalar/None  1.28 ± 2%
+ReadScalar/Zlib  4.11 ± 1%
 ```
