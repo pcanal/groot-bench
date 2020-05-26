@@ -69,7 +69,44 @@ int main(int argc, char **argv) {
 			std::cout << "Processing event " << i << "\n";
 		}
 		i++;
-		sum += *event;
+		sum += 0
+		+ *run
+		+ *luminosityBlock
+		+ *event
+		+ *PV_npvs
+		+ *nMuon
+		+ *PV_npvs
+		+ *PV_x
+		+ *PV_y
+		+ *PV_z
+		+ (*nMuon <= 0
+				? 0
+				: Muon_pt[0]
+				+ Muon_eta[0]
+				+ Muon_phi[0]
+				+ Muon_mass[0]
+				+ Muon_charge[0]
+				+ Muon_pfRelIso03_all[0]
+				+ Muon_pfRelIso04_all[0]
+				+ Muon_tightId[0]
+				+ Muon_softId[0]
+				+ Muon_dxy[0]
+				+ Muon_dxyErr[0]
+				+ Muon_dz[0]
+				+ Muon_dzErr[0])
+		+ (*nElectron <= 0
+				? 0
+				: Electron_pt[0]
+				+ Electron_eta[0]
+				+ Electron_phi[0]
+				+ Electron_mass[0]
+				+ Electron_charge[0]
+				+ Electron_pfRelIso03_all[0]
+				+ Electron_dxy[0]
+				+ Electron_dxyErr[0]
+				+ Electron_dz[0]
+				+ Electron_dzErr[0])
+		;
 	}
 	std::cout << "sum=" << sum << "\n";
 }
