@@ -11,42 +11,42 @@ import (
 )
 
 func BenchmarkReadScalar(b *testing.B) {
-	for _, bc := range []struct {
-		name  string
-		fname string
+	for _, lc := range []struct {
+		kind string
+		cmd  string
 	}{
 		{
-			name:  "None",
-			fname: "./testdata/scalar-none.root",
+			kind: "GoHEP",
+			cmd:  "./bin/read-scalar",
 		},
 		{
-			name:  "LZ4",
-			fname: "./testdata/scalar-lz4.root",
+			kind: "ROOT-TreeBranch",
+			cmd:  "./bin/cxx-root-read-br",
 		},
 		{
-			name:  "Zlib",
-			fname: "./testdata/scalar-zlib.root",
+			kind: "ROOT-TreeReader",
+			cmd:  "./bin/cxx-root-read-rd",
 		},
 	} {
-		b.Run(bc.name, func(b *testing.B) {
-			for _, lc := range []struct {
-				kind string
-				cmd  string
+		b.Run(lc.kind, func(b *testing.B) {
+			for _, bc := range []struct {
+				name  string
+				fname string
 			}{
 				{
-					kind: "GoHEP",
-					cmd:  "./bin/read-scalar",
+					name:  "None",
+					fname: "./testdata/scalar-none.root",
 				},
 				{
-					kind: "ROOT-TreeBranch",
-					cmd:  "./bin/cxx-root-read-br",
+					name:  "LZ4",
+					fname: "./testdata/scalar-lz4.root",
 				},
 				{
-					kind: "ROOT-TreeReader",
-					cmd:  "./bin/cxx-root-read-rd",
+					name:  "Zlib",
+					fname: "./testdata/scalar-zlib.root",
 				},
 			} {
-				b.Run(lc.kind, func(b *testing.B) {
+				b.Run(bc.name, func(b *testing.B) {
 					b.ResetTimer()
 					for i := 0; i < b.N; i++ {
 						b.StopTimer()
