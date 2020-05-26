@@ -19,9 +19,10 @@ import (
 
 func main() {
 	var (
-		count = flag.Int("count", 20, "number of times to run the benchmark")
-		bench = flag.String("bench", ".", "benchmark to run")
-		fname = flag.String("log", "", "path to log file")
+		count   = flag.Int("count", 20, "number of times to run the benchmark")
+		bench   = flag.String("bench", ".", "benchmark to run")
+		fname   = flag.String("log", "", "path to log file")
+		timeout = flag.Duration("timeout", 2*time.Hour, "benchmark timeout")
 	)
 
 	log.SetPrefix("bench: ")
@@ -41,7 +42,7 @@ func main() {
 	defer f.Close()
 
 	o := new(strings.Builder)
-	err = run(io.MultiWriter(o, f), *bench, *count)
+	err = run(io.MultiWriter(o, f), *bench, *count, *timeout)
 	if err != nil {
 		log.Fatalf("could not run bench: %+v", err)
 	}
@@ -67,10 +68,11 @@ func bstat(fname string, r io.Reader) {
 	benchstat.FormatText(os.Stdout, c.Tables())
 }
 
-func run(w io.Writer, bench string, count int) error {
+func run(w io.Writer, bench string, count int, timeout time.Duration) error {
 	cmd := exec.Command("go", "test", "-run=NONE",
 		"-bench="+bench,
 		fmt.Sprintf("-count=%d", count),
+		fmt.Sprintf("-timeout=%v", timeout),
 	)
 	cmd.Stdout = io.MultiWriter(w, os.Stdout)
 	cmd.Stderr = os.Stderr
