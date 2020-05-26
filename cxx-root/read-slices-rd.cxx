@@ -3,9 +3,13 @@
 // license that can be found in the LICENSE file.
 
 #include <iostream>
+#include <stdint.h>
+#include <vector>
 
 #include "TFile.h"
+#include "TTree.h"
 #include "TTreeReader.h"
+#include "TTreeReaderArray.h"
 
 int main(int argc, char **argv) {
 	auto fname = "./scalar.root";
@@ -20,10 +24,10 @@ int main(int argc, char **argv) {
 	auto f = TFile::Open(fname);
 	auto r = TTreeReader(tname, f);
 
-	TTreeReaderValue<double> var00(r, "var00");
-	TTreeReaderValue<double> var01(r, "var01");
-	TTreeReaderValue<double> var02(r, "var02");
-	TTreeReaderValue<double> var03(r, "var03");
+	TTreeReaderArray<double> var00(r, "var00");
+	TTreeReaderArray<double> var01(r, "var01");
+	TTreeReaderArray<double> var02(r, "var02");
+	TTreeReaderArray<double> var03(r, "var03");
 
 	int n = r.GetEntries();
 	auto freq = n/10;
@@ -35,7 +39,7 @@ int main(int argc, char **argv) {
 			std::cout << "Processing event " << i << "\n";
 		}
 		i++;
-		sum += *var00 + *var01 + *var02 + *var03;
+		sum += var00[0] + var01[0] + var02[0] + var03[0];
 	}
 	std::cout << "sum=" << sum << "\n";
 }

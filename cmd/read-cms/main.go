@@ -20,7 +20,7 @@ import (
 func main() {
 	var (
 		nevts = flag.Int64("nevts", -1, "number of events to read")
-		tname = flag.String("t", "tree", "name of the ROOT tree to read")
+		tname = flag.String("t", "Events", "name of the ROOT tree to read")
 		names = flag.String("b", "", "comma-separated list of branches/leaves to read")
 
 		cpuProf = flag.String("cpu-profile", "", "path to the output CPU profile")
