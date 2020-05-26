@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <vector>
 
+#include "TROOT.h"
 #include "TFile.h"
 #include "TTree.h"
 
@@ -54,6 +55,11 @@ int main(int argc, char **argv) {
 	if (argc > 2) {
 		tname = argv[2];
 	}
+
+#ifdef GROOT_ENABLE_IMT
+	ROOT::EnableImplicitMT();
+#endif // GROOT_ENABLE_IMT
+
 	auto f = TFile::Open(fname);
 	auto t = f->Get<TTree>(tname);
 
