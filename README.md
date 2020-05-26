@@ -10,7 +10,7 @@
 
 ## results
 
-- Go-HEP `v0.27.0`, `ROOT-6.20/04` (both on local file)
+- Go-HEP `v0.27.0` (Go-1.14), `ROOT-6.20/04` (g++-10.1.0) (both on local file)
 
 ```
 name                               time/op
