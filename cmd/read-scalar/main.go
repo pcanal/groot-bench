@@ -20,7 +20,6 @@ import (
 func main() {
 	var (
 		nevts = flag.Int64("nevts", -1, "number of events to read")
-		fname = flag.String("f", "scalar.root", "path to output ROOT file to generate")
 		tname = flag.String("t", "tree", "name of the output ROOT tree to generate")
 		names = flag.String("b", "", "comma-separated list of branches/leaves to read")
 
@@ -55,7 +54,7 @@ func main() {
 		branches = strings.Split(*names, ",")
 	}
 
-	read(*fname, *tname, *nevts, branches)
+	read(flag.Arg(0), *tname, *nevts, branches)
 }
 
 func read(fname, tname string, nevts int64, names []string) {
