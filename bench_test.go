@@ -124,6 +124,7 @@ func BenchmarkReadCMS(b *testing.B) {
 	for _, lc := range []struct {
 		kind string
 		cmd  string
+		skip bool
 	}{
 		{
 			kind: "GoHEP",
@@ -133,10 +134,11 @@ func BenchmarkReadCMS(b *testing.B) {
 			kind: "ROOT-TreeBranch",
 			cmd:  "./bin/cxx-read-cms-br",
 		},
-		//		{
-		//			kind: "ROOT-TreeBranchMT",
-		//			cmd:  "./bin/cxx-read-cms-br-mt",
-		//		},
+		{
+			kind: "ROOT-TreeBranchMT",
+			cmd:  "./bin/cxx-read-cms-br-mt",
+			skip: true, // takes way too much time (more than single threaded)
+		},
 		{
 			kind: "ROOT-TreeReader",
 			cmd:  "./bin/cxx-read-cms-rd",
@@ -146,6 +148,10 @@ func BenchmarkReadCMS(b *testing.B) {
 			cmd:  "./bin/cxx-read-cms-rd-mt",
 		},
 	} {
+		if lc.skip {
+			b.Skip()
+		}
+
 		b.Run(lc.kind, func(b *testing.B) {
 			for _, bc := range []struct {
 				name  string

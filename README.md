@@ -5,7 +5,7 @@
 
 ## input data
 
-- `root://eospublic.cern.ch//eos/root-eos/cms_opendata_2012_nanoaod/Run2012B_DoubleElectron.root`
+- `root://eospublic.cern.ch//eos/root-eos/cms_opendata_2012_nanoaod/Run2012B_DoubleElectron.root` (1.8Gb, 23571931 entries)
 - toy-data (`float64` and/or `[]float64`)
 
 ## results
