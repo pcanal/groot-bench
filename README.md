@@ -2,11 +2,41 @@
 
 `groot-bench` gathers a few programs to benchmark the read/write performances of [groot](https://go-hep.org/x/hep/groot) _wrt_ ROOT/C++.
 
-## toy-data generation
+## toy-data
+
+### timings
+
+#### scalar
+
+- Go-HEP `v0.27.0`
 
 ```
-$> go build ./cmd/gen-data-scalar
-$> ./gen-data-scalar.go -h
+name                               time/op
+ReadScalar/GoHEP/None-8            737ms ± 3%
+ReadScalar/GoHEP/LZ4-8             769ms ± 3%
+ReadScalar/GoHEP/Zlib-8            1.33s ± 1%
+ReadScalar/ROOT-TreeBranch/None-8  1.22s ± 3%
+ReadScalar/ROOT-TreeBranch/LZ4-8   1.35s ± 3%
+ReadScalar/ROOT-TreeBranch/Zlib-8  2.47s ± 1%
+ReadScalar/ROOT-TreeReader/None-8  1.43s ± 5%
+ReadScalar/ROOT-TreeReader/LZ4-8   1.57s ± 2%
+ReadScalar/ROOT-TreeReader/Zlib-8  2.69s ± 1%
+```
+
+- Go-HEP `v0.26.1-0.20200511085556-0f7b59f24c5e`
+
+```
+name                     time/op
+ReadScalar/GoHEP/None-8  1.27s ± 3%
+ReadScalar/GoHEP/LZ4-8   1.39s ± 1%
+ReadScalar/GoHEP/Zlib-8  4.10s ± 1%
+```
+
+### generation
+
+```
+$> make binaries
+$> ./bin/gen-data-scalar.go -h
 Usage of gen-data-scalar:
   -cpu-profile string
     	path to the output CPU profile
@@ -24,74 +54,34 @@ Usage of gen-data-scalar:
     	compression to use (if any)
 ```
 
-### no-compression
+#### no-compression
 
 ```
-./gen-data-scalar -zip=none -o ./testdata/scalar-none.root
+./bin/gen-data-scalar -zip=none -o ./testdata/scalar-none.root
 ```
 
-### lz4
+#### lz4
 
 ```
-./gen-data-scalar -zip=lz4 -lvl=0 -o ./testdata/scalar-lz4-0.root
-./gen-data-scalar -zip=lz4 -lvl=1 -o ./testdata/scalar-lz4-1.root
-./gen-data-scalar -zip=lz4 -lvl=6 -o ./testdata/scalar-lz4-6.root
-./gen-data-scalar -zip=lz4 -lvl=9 -o ./testdata/scalar-lz4-9.root
+./bin/gen-data-scalar -zip=lz4 -lvl=0 -o ./testdata/scalar-lz4-0.root
+./bin/gen-data-scalar -zip=lz4 -lvl=1 -o ./testdata/scalar-lz4-1.root
+./bin/gen-data-scalar -zip=lz4 -lvl=6 -o ./testdata/scalar-lz4-6.root
+./bin/gen-data-scalar -zip=lz4 -lvl=9 -o ./testdata/scalar-lz4-9.root
 ```
 
-### zlib
+#### zlib
 
 ```
-./gen-data-scalar -zip=zlib -lvl=0 -o ./testdata/scalar-zlib-0.root
-./gen-data-scalar -zip=zlib -lvl=1 -o ./testdata/scalar-zlib-1.root
-./gen-data-scalar -zip=zlib -lvl=2 -o ./testdata/scalar-zlib-2.root
-./gen-data-scalar -zip=zlib -lvl=3 -o ./testdata/scalar-zlib-3.root
-./gen-data-scalar -zip=zlib -lvl=6 -o ./testdata/scalar-zlib-6.root
-./gen-data-scalar -zip=zlib -lvl=9 -o ./testdata/scalar-zlib-9.root
+./bin/gen-data-scalar -zip=zlib -lvl=0 -o ./testdata/scalar-zlib-0.root
+./bin/gen-data-scalar -zip=zlib -lvl=1 -o ./testdata/scalar-zlib-1.root
+./bin/gen-data-scalar -zip=zlib -lvl=2 -o ./testdata/scalar-zlib-2.root
+./bin/gen-data-scalar -zip=zlib -lvl=3 -o ./testdata/scalar-zlib-3.root
+./bin/gen-data-scalar -zip=zlib -lvl=6 -o ./testdata/scalar-zlib-6.root
+./bin/gen-data-scalar -zip=zlib -lvl=9 -o ./testdata/scalar-zlib-9.root
 ```
 
-### zstd
+#### zstd
 
 ```
-./gen-data-scalar -zip=zstd -o ./testdata/scalar-zstd.root
-```
-
-## timings
-
-### scalar
-
-- Go-HEP `v0.26.1-0.20200511085556-0f7b59f24c5e`
-
-```
-name             s
-ReadScalar/LZ4   1.39 ± 1%
-ReadScalar/None  1.28 ± 2%
-ReadScalar/Zlib  4.11 ± 1%
-```
-
-- Go-HEP `v0.27.0`
-
-```
-name             s
-ReadScalar/LZ4   0.77 ± 4%
-ReadScalar/None  0.75 ± 4%
-ReadScalar/Zlib  1.34 ± 1%
-```
-
-- ROOT TTree::SetBranch `6.20/04`
-
-```
-name             s
-ReadScalar/LZ4   1.36 ± 3%
-ReadScalar/None  1.21 ± 2%
-ReadScalar/Zlib  2.48 ± 1%
-```
-
-- ROOT TTreeReader `6.20/04`
-
-```
-name             s
-ReadScalar/LZ4   1.57 ± 2%
-ReadScalar/None  1.43 ± 4%
-ReadScalar/Zlib  2.69 ± 1%
+./bin/gen-data-scalar -zip=zstd -o ./testdata/scalar-zstd.root
 ```
