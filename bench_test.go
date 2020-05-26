@@ -133,10 +133,10 @@ func BenchmarkReadCMS(b *testing.B) {
 			kind: "ROOT-TreeBranch",
 			cmd:  "./bin/cxx-read-cms-br",
 		},
-		{
-			kind: "ROOT-TreeBranchMT",
-			cmd:  "./bin/cxx-read-cms-br-mt",
-		},
+		//		{
+		//			kind: "ROOT-TreeBranchMT",
+		//			cmd:  "./bin/cxx-read-cms-br-mt",
+		//		},
 		{
 			kind: "ROOT-TreeReader",
 			cmd:  "./bin/cxx-read-cms-rd",

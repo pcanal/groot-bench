@@ -2,16 +2,23 @@
 
 `groot-bench` gathers a few programs to benchmark the read/write performances of [groot](https://go-hep.org/x/hep/groot) _wrt_ ROOT/C++.
 
-## toy-data
 
-### timings
+## input data
 
-#### scalar
+- `root://eospublic.cern.ch//eos/root-eos/cms_opendata_2012_nanoaod/Run2012B_DoubleElectron.root`
+- toy-data (`float64` and/or `[]float64`)
 
-- Go-HEP `v0.27.0`
+## results
+
+- Go-HEP `v0.27.0`, `ROOT-6.20/04` (both on local file)
 
 ```
 name                               time/op
+ReadCMS/GoHEP/Zlib-8               19.2s ± 1%
+ReadCMS/ROOT-TreeBranch/Zlib-8     37.5s ± 1%
+ReadCMS/ROOT-TreeReader/Zlib-8     26.1s ± 3%
+ReadCMS/ROOT-TreeReaderMT/Zlib-8   25.6s ± 5%  (ROOT::EnableImplicitMT())
+
 ReadScalar/GoHEP/None-8            737ms ± 3%
 ReadScalar/GoHEP/LZ4-8             769ms ± 3%
 ReadScalar/GoHEP/Zlib-8            1.33s ± 1%
@@ -31,6 +38,8 @@ ReadScalar/GoHEP/None-8  1.27s ± 3%
 ReadScalar/GoHEP/LZ4-8   1.39s ± 1%
 ReadScalar/GoHEP/Zlib-8  4.10s ± 1%
 ```
+
+## toy-data
 
 ### generation
 

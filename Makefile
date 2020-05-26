@@ -29,8 +29,8 @@ binaries:
 	go build -o ./bin/read-cms ./cmd/read-cms
 	$(CXX) $(OPT) $(ROOT_FLAGS) -o bin/cxx-read-cms-br ./cxx-root/read-cms-br.cxx
 	$(CXX) $(OPT) $(ROOT_FLAGS) -o bin/cxx-read-cms-rd ./cxx-root/read-cms-rd.cxx
-	$(CXX) $(OPT) $(ROOT_FLAGS) $(IMT) -o bin/cxx-read-cms-br-imt ./cxx-root/read-cms-br.cxx
-	$(CXX) $(OPT) $(ROOT_FLAGS) $(IMT) -o bin/cxx-read-cms-rd-imt ./cxx-root/read-cms-rd.cxx
+	$(CXX) $(OPT) $(ROOT_FLAGS) $(IMT) -o bin/cxx-read-cms-br-mt ./cxx-root/read-cms-br.cxx
+	$(CXX) $(OPT) $(ROOT_FLAGS) $(IMT) -o bin/cxx-read-cms-rd-mt ./cxx-root/read-cms-rd.cxx
 
 bench:
 	./bin/run-bench -count=20
