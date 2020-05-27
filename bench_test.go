@@ -146,6 +146,7 @@ func BenchmarkReadCMS(b *testing.B) {
 		{
 			kind: "ROOT-TreeReaderMT",
 			cmd:  "./bin/cxx-read-cms-rd-mt",
+			skip: true, // TreeReader isn't multi-threaded (RDF is)
 		},
 	} {
 		if lc.skip {
