@@ -134,20 +134,20 @@ func BenchmarkReadCMS(b *testing.B) {
 			kind: "ROOT-TreeBranch",
 			cmd:  "./bin/cxx-read-cms-br",
 		},
-		{
-			kind: "ROOT-TreeBranchMT",
-			cmd:  "./bin/cxx-read-cms-br-mt",
-			skip: true, // takes way too much time (more than single threaded)
-		},
+		//	{
+		//		kind: "ROOT-TreeBranchMT",
+		//		cmd:  "./bin/cxx-read-cms-br-mt",
+		//		skip: true, // takes way too much time (more than single threaded)
+		//	},
 		{
 			kind: "ROOT-TreeReader",
 			cmd:  "./bin/cxx-read-cms-rd",
 		},
-		{
-			kind: "ROOT-TreeReaderMT",
-			cmd:  "./bin/cxx-read-cms-rd-mt",
-			skip: true, // TreeReader isn't multi-threaded (RDF is)
-		},
+		//	{
+		//		kind: "ROOT-TreeReaderMT",
+		//		cmd:  "./bin/cxx-read-cms-rd-mt",
+		//		skip: true, // TreeReader isn't multi-threaded (RDF is)
+		//	},
 	} {
 		if lc.skip {
 			b.Skip()
