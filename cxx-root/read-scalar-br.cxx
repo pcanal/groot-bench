@@ -20,17 +20,22 @@ int main(int argc, char **argv) {
 	auto f = TFile::Open(fname);
 	auto t = f->Get<TTree>(tname);
 
-	t->SetBranchStatus("*", 1);
+	t->SetBranchStatus("*", 0);
+
+	t->SetBranchStatus("var00", 1);
+	t->SetBranchStatus("var01", 1);
+	t->SetBranchStatus("var02", 1);
+	t->SetBranchStatus("var03", 1);
 
 	double var00;
 	double var01;
 	double var02;
 	double var03;
 
-	t->Branch("var00", &var00);
-	t->Branch("var01", &var01);
-	t->Branch("var02", &var02);
-	t->Branch("var03", &var03);
+	t->SetBranchAddress("var00", &var00);
+	t->SetBranchAddress("var01", &var01);
+	t->SetBranchAddress("var02", &var02);
+	t->SetBranchAddress("var03", &var03);
 
 	int n = t->GetEntries();
 	auto freq = n/10;
